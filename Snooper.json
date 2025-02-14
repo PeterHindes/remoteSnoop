@@ -1,0 +1,298 @@
+{
+  "name": "Snooper",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        20,
+        20
+      ],
+      "id": "396742ab-acfd-4543-b2cd-9cd0d17c0b59",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are browsing an Ubuntu System.\n\nFind all the secrets in the users folder andf give a summary of what their up to. If something is a folder it cannot be cat ed\n\nIf you need to get the current dir cd to './' and you will get the pwd in the response.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        380,
+        20
+      ],
+      "id": "2d7b006b-76b8-4e38-9060-c78acb442eee",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        300,
+        380
+      ],
+      "id": "68340488-54a2-4338-8624-d4a567051e65",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "qS1F6WSHsS6yYIIo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Change directory with automatic ls. Supports absolute and relative file paths.",
+        "method": "POST",
+        "url": "https://ltest.abad.cc/navigate",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "directory"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        320
+      ],
+      "id": "9136961d-bcb7-413c-b012-480ac2f6738c",
+      "name": "CD then LS"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get file contents by passing file name. Supports absolute and relative file paths.",
+        "method": "POST",
+        "url": "https://ltest.abad.cc/filecontent",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "file_path"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        320
+      ],
+      "id": "7b3dfc34-1838-4d5c-bc6b-20c613e7778f",
+      "name": "cat file contents"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        220
+      ],
+      "id": "60e7ed92-174e-44d9-803e-c710c148fcf5",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZZauQOzZhTNPVqXj",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "qwen-max",
+          "mode": "list",
+          "cachedResultName": "qwen-max"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        560
+      ],
+      "id": "4179ac2f-a556-4952-8c0a-9d2d2b2595e3",
+      "name": "Qwen Max",
+      "credentials": {
+        "openAiApi": {
+          "id": "JucPwhVZBBUTkFSC",
+          "name": "AlibabaAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "DeepSeek-R1-GGUF/Qwen2.5-72B-Instruct-GGUF/qwen2.5-72b-instruct-q4_0-00001-of-00011.gguf",
+          "mode": "list",
+          "cachedResultName": "DeepSeek-R1-GGUF/Qwen2.5-72B-Instruct-GGUF/qwen2.5-72b-instruct-q4_0-00001-of-00011.gguf"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        300,
+        720
+      ],
+      "id": "39c767eb-09f4-4a48-b9d5-12b2e2619b49",
+      "name": "Local Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "21XkKtf2gZt9Dxsz",
+          "name": "llamacpp"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get file contents by passing file name. Supports absolute and relative file paths.",
+        "method": "POST",
+        "url": "https://htest.abad.cc/filecontent",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "file_path"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        680
+      ],
+      "id": "6b0c2006-610c-4c61-8744-8732167fe87f",
+      "name": "cat file contents1"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Run the unix find command in the current directory (given by cd ./). Use any arguments you like. Arguments is a comma separated json array. For example: \"hello\", \"world\"",
+        "method": "POST",
+        "url": "https://htest.abad.cc/find",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "arguments",
+              "valueProvider": "fieldValue",
+              "value": "[{arguments}]"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        840,
+        320
+      ],
+      "id": "5d51a127-a97e-4d02-ba3e-dcda7e959832",
+      "name": "find command"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CD then LS": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cat file contents": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Qwen Max": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Local Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "find command": {
+      "ai_tool": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "eac98b44-6e72-46d4-8bad-795934f68fa8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "96af8d06bf90ffec6f1bbc66048f130a77301d43d56fe39886138c8a48f341a7"
+  },
+  "id": "Ts9QxxZ7EQH8OfH9",
+  "tags": []
+}
